@@ -10,7 +10,7 @@ A simple Python script to update a Route53 record.
 + pip3 install -r requirements.txt
 
 
-###To Do
+### To Do
 
 - [ ] Error Handeling
 - [ ] Update Discord / Mattermost / Slack option?
