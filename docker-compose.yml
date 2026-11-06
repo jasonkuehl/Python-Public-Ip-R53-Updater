@@ -1,0 +1,24 @@
+# Keeps a Route 53 A record pointed at this network's public IP.
+#   cp vars-template.py vars.py   then fill in HostedZoneId, R53Record and the profile name
+#   docker compose up -d --build
+# Your ~/.aws is mounted read-only. The container runs as your user (UID/GID, default
+# 1000) so it can read the credentials file.
+services:
+  r53-ip-updater:
+    image: r53-ip-updater:local
+    build: .
+    container_name: r53-ip-updater
+    restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      INTERVAL: "${INTERVAL:-900}"   # seconds between updates
+      AWS_SHARED_CREDENTIALS_FILE: /aws/credentials
+      AWS_CONFIG_FILE: /aws/config
+    volumes:
+      - ./vars.py:/app/vars.py:ro
+      - ${AWS_DIR:-~/.aws}:/aws:ro
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

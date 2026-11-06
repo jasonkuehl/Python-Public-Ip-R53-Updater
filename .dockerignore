@@ -1,0 +1,7 @@
+.git
+.github
+.gitea
+vars.py
+README.md
+docker-compose.yml
+__pycache__
